@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	NoExpiration time.Duration = -1
+	NoExpiration      time.Duration = -1
 	DefaultExpiration time.Duration = 0
 )
+
 type cache struct {
 	defaultExpiration time.Duration
 	items             map[string]string
@@ -21,14 +22,15 @@ type cache struct {
 type Cache struct {
 	*cache
 }
-func (c *cache) Set(key string, x string, d time.Duration) (ke string,xe string){
+
+func (c *cache) Set(key string, x string, d time.Duration) error {
 	if d == DefaultExpiration {
 		d = c.defaultExpiration
 	}
 	c.mu.Lock()
 	c.items[key] = x
 	c.mu.Unlock()
-	return key,x
+	return nil
 }
 func (c *cache) set(key string, x string, d time.Duration) {
 	if d == DefaultExpiration {
@@ -54,6 +56,23 @@ func (c *cache) get(key string) (string, bool) {
 		return "", false
 	}
 	return item, true
+}
+func (c *cache) Delete(k string) error {
+	c.mu.Lock()
+	c.delete(k)
+	c.mu.Unlock()
+
+	return nil
+}
+func (c *cache) delete(k string) (v string, a bool) {
+	if c != nil {
+		if v, found := c.items[k]; found {
+			delete(c.items, k)
+			return v, true
+		}
+	}
+	delete(c.items, k)
+	return "", false
 }
 func (c *cache) save(w io.Writer) (err error) {
 	enc := gob.NewEncoder(w)
@@ -90,10 +109,10 @@ func (c *cache) load(r io.Reader) error {
 		c.mu.Lock()
 		defer c.mu.Unlock()
 		//for k, v := range items {
-			//ov, found := c.items[k]
-			//if !found || ov.Expired() {
-				//c.items[k] = v
-			//}
+		//ov, found := c.items[k]
+		//if !found || ov.Expired() {
+		//c.items[k] = v
+		//}
 		//}
 	}
 	return err
