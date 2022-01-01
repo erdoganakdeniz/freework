@@ -15,7 +15,6 @@ import (
 )
 
 var c *cache.Cache
-
 var PORT = ":8080"
 
 func main() {
@@ -78,7 +77,6 @@ func Set(w http.ResponseWriter, r *http.Request) {
 
 // GET all the stored cache
 func Get(w http.ResponseWriter, r *http.Request) {
-	c.LoadFile("tmp/TIMESTAMP-data.gob")
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("Serving:", r.URL.Path, " from", r.Host, r.Method)
 	if r.Method != http.MethodGet {
