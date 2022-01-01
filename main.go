@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"freework/cache"
-	"freework/model"
+	"freework/models"
 	"freework/service"
+	"freework/utils"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 )
@@ -19,14 +19,13 @@ var c *cache.Cache
 var PORT = ":8080"
 
 func main() {
-	c = cache.New(2*time.Minute, 2*time.Minute)
-	fileName := "TIMESTAMP-data.gob"
-	_, erra := os.Open("tmp/" + fileName)
-	if erra != nil {
+	c = cache.New(35*time.Second, 35*time.Second)
+	utils.LoadfromFile(c)
 
-	}
-	c.LoadFile("tmp/" + fileName)
-
+	go func() {
+		//Running it synchronously.
+		utils.SaveInterval(c)
+	}()
 	mux := http.NewServeMux()
 	mux.Handle("/get", http.HandlerFunc(Get))
 	mux.Handle("/set", http.HandlerFunc(Set))
@@ -63,7 +62,7 @@ func Set(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error : ", http.StatusInternalServerError)
 		return
 	}
-	var keyvalue model.KeyValue
+	var keyvalue models.KeyValue
 	err = json.Unmarshal(d, &keyvalue)
 	if err != nil {
 		log.Println(err)
@@ -73,7 +72,8 @@ func Set(w http.ResponseWriter, r *http.Request) {
 	era := service.Set(c, keyvalue)
 	res, _ := json.Marshal(era)
 	w.Write(res)
-	c.SaveFile("tmp/TIMESTAMP-data.gob")
+	utils.SavetoFile(c)
+
 }
 
 // GET all the stored cache
@@ -89,7 +89,8 @@ func Get(w http.ResponseWriter, r *http.Request) {
 	era := service.Get(c)
 	res, _ := json.Marshal(era)
 	w.Write(res)
-	c.SaveFile("tmp/TIMESTAMP-data.gob")
+	utils.SavetoFile(c)
+
 }
 
 // FLUSH all the data
@@ -102,7 +103,7 @@ func Flush(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	service.Flush(c)
-	c.SaveFile("tmp/TIMESTAMP-data.gob")
+	utils.SavetoFile(c)
 
 }
 
@@ -119,9 +120,11 @@ func GetByKey(w http.ResponseWriter, r *http.Request) {
 	era := service.GetByKey(c, key)
 	res, _ := json.Marshal(era)
 	w.Write(res)
-	c.SaveFile("tmp/TIMESTAMP-data.gob")
+	utils.SavetoFile(c)
 
 }
+
+//Delete Value by Key
 func Delete(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("Serving:", r.URL.Path, " from", r.Host, r.Method)
@@ -134,12 +137,6 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	era := service.Delete(c, key)
 	res, _ := json.Marshal(era)
 	w.Write(res)
-	c.SaveFile("tmp/TIMESTAMP-data.gob")
+	utils.SavetoFile(c)
 
-}
-func SaveFile() {
-	_, err := os.Create("tmp/TIMESTAMP-data.gob")
-	if err != nil {
-		fmt.Println(err)
-	}
 }

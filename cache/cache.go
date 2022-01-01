@@ -108,12 +108,10 @@ func (c *cache) load(r io.Reader) error {
 	if err == nil {
 		c.mu.Lock()
 		defer c.mu.Unlock()
-		//for k, v := range items {
-		//ov, found := c.items[k]
-		//if !found || ov.Expired() {
-		//c.items[k] = v
-		//}
-		//}
+		for s, s2 := range items {
+			c.items[s] = s2
+		}
+
 	}
 	return err
 }
