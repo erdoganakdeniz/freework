@@ -14,7 +14,7 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
 ## GET Endpoint
 #### Tüm Öğeleri Getir İsteği
 
-```http
+```
   GET /get
 ```
 #### Tüm Öğeleri Getir Dönüş Değeri
@@ -28,7 +28,7 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
 ````
 
 #### İstenen Öğeyi Getir İsteği
-```http
+```
   GET /get/key
 ```
 
@@ -49,7 +49,7 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
 
 
 ## SET Endpoint
-```http
+```
   POST /set
 ```
 
@@ -81,7 +81,7 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
 
 
 ## Delete Endpoint
-```http
+```
   DELETE /delete/key
 ```
 
@@ -103,7 +103,7 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
 
 
 ## Flush Endpoint
-```http
+```
   GET /flush
 ```
 
