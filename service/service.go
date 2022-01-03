@@ -9,7 +9,7 @@ import (
 func Get(c *cache.Cache) *models.Response {
 	items := c.Items()
 	res := models.Response{
-		Code:    http.StatusCreated,
+		Code:    http.StatusOK,
 		Method:  http.MethodGet,
 		Message: "All Data",
 		Data:    items}
@@ -19,7 +19,7 @@ func GetByKey(c *cache.Cache, key string) *models.Response {
 	item, err := c.Get(key)
 	if err == true {
 		res := models.Response{
-			Code:    http.StatusCreated,
+			Code:    http.StatusOK,
 			Method:  http.MethodGet,
 			Message: "Value Found",
 			Data:    item}
@@ -57,6 +57,7 @@ func Flush(c *cache.Cache) *models.Response {
 		Method:  http.MethodGet,
 		Message: "Flushed Store",
 		Data:    ""}
+
 	return &res
 }
 func Delete(c *cache.Cache, data string) *models.Response {

@@ -10,22 +10,23 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 )
 
 var c *cache.Cache
+var PORT = ":8080"
 
 func main() {
-	PORT := os.Getenv("PORT")
 	c = cache.New(35*time.Second, 35*time.Second)
 	utils.LoadfromFile(c)
+	utils.SavetoFile(c)
 
 	go func() {
 		//Running it synchronously.
 		utils.SaveInterval(c)
 	}()
+
 	mux := http.NewServeMux()
 	mux.Handle("/get", http.HandlerFunc(Get))
 	mux.Handle("/set", http.HandlerFunc(Set))

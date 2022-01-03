@@ -10,14 +10,17 @@ import (
 var file = "tmp/TIMESTAMP-data.gob"
 
 func SavetoFile(c *cache.Cache) {
+	_, err := os.Create(file)
+	if err != nil {
+	}
 	c.SaveFile(file)
+
 }
 func SaveInterval(c *cache.Cache) {
 	for range time.Tick(10 * time.Minute) {
 		c.SaveFile(file)
 		fmt.Println("Automatic Save to File")
 	}
-	time.Sleep(10 * time.Second)
 
 }
 func LoadfromFile(c *cache.Cache) {
