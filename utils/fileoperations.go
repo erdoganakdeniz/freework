@@ -9,6 +9,7 @@ import (
 
 var file = "tmp/TIMESTAMP-data.gob"
 
+//Save to file from store
 func SavetoFile(s *store.Store) {
 	_, err := os.Create(file)
 	if err != nil {
@@ -16,6 +17,8 @@ func SavetoFile(s *store.Store) {
 	s.SaveFile(file)
 
 }
+
+//Automatic save to file every 20 minutes
 func SaveInterval(s *store.Store) {
 	for range time.Tick(20 * time.Minute) {
 		s.SaveFile(file)
@@ -23,6 +26,8 @@ func SaveInterval(s *store.Store) {
 	}
 
 }
+
+//Load from file to store
 func LoadfromFile(s *store.Store) {
 	_, err := os.Open(file)
 	if err == nil {

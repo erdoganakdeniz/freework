@@ -76,7 +76,7 @@ func Set(w http.ResponseWriter, r *http.Request) {
 	utils.SavetoFile(s)
 }
 
-// GET all the stored store
+// GET all the stored data
 func Get(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("Serving:", r.URL.Path, " from", r.Host, r.Method)
