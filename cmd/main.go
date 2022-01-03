@@ -27,9 +27,6 @@ func main() {
 		utils.SaveInterval(c)
 	}()
 	mux := http.NewServeMux()
-	mux.Handle("/", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		writer.Write([]byte("Hello"))
-	}))
 	mux.Handle("/get", http.HandlerFunc(Get))
 	mux.Handle("/set", http.HandlerFunc(Set))
 	mux.Handle("/flush", http.HandlerFunc(Flush))
