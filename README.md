@@ -23,7 +23,10 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
     "code": 200,
     "method": "GET",
     "message": "All Data",
-    "data": {}
+    "data": {
+        "Anahtar": "Deger",
+        "Anahtar2": "Deger2"
+    }
 }
 ````
 
@@ -36,7 +39,7 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
 | :-------- | :------- | :-------------------------------- |
 | `key`      | `string` | **Gerekli**. Çağrılacak öğenin anahtar değeri |
 
-#### İstenen Öğeyi Getir Dönüş Değeri
+#### İstenen Öğeyi Getir Olumlu Dönüş Değeri
 
 ````
 {
@@ -46,7 +49,16 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
     "data": "Deger"
 }
 ````
+#### İstenen Öğeyi Getir Olumsuz Dönüş Değeri
 
+````
+{
+    "code": 404,
+    "method": "GET",
+    "message": "Value not Found",
+    "data": ""
+}
+````
 
 ## SET Endpoint
 ```
@@ -117,6 +129,20 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
 ````
 {}
 ````
+## Dağıtım
+
+Bu projeyi Docker ortamında çalıştırmak için ;
+
+Build etmek için
+```bash
+  docker build --tag keyvaluestorerestapi .
+```
+
+Çalıştırmak için
+```bash
+  docker run keyvaluestorerestapi
+```
+  
 ## Lisans
 
 [MIT](https://choosealicense.com/licenses/mit/)
