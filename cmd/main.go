@@ -10,12 +10,13 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
 
 var c *cache.Cache
-var PORT = ":8080"
+var PORT = os.Getenv("PORT")
 
 func main() {
 	c = cache.New(35*time.Second, 35*time.Second)
