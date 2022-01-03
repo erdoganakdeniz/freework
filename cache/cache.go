@@ -64,7 +64,7 @@ func (c *cache) Delete(k string) error {
 
 	return nil
 }
-func (c *cache) delete(k string) (v string, a bool) {
+func (c *cache) delete(k string) (string, bool) {
 	if c != nil {
 		if v, found := c.items[k]; found {
 			delete(c.items, k)
@@ -132,14 +132,7 @@ func (c *cache) Items() map[string]string {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 	m := make(map[string]string, len(c.items))
-	//now := time.Now().UnixNano()
 	for k, v := range c.items {
-
-		//if v.Expiration > 0 {
-		//	if now > v.Expiration {
-		//		continue
-		//	}
-		//}
 		m[k] = v
 	}
 	return m

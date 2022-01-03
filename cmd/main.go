@@ -72,7 +72,6 @@ func Set(w http.ResponseWriter, r *http.Request) {
 	res, _ := json.Marshal(era)
 	w.Write(res)
 	utils.SavetoFile(c)
-
 }
 
 // GET all the stored cache

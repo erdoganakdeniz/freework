@@ -10,10 +10,6 @@ import (
 var file = "tmp/TIMESTAMP-data.gob"
 
 func SavetoFile(c *cache.Cache) {
-	_, err := os.Create(file)
-	if err != nil {
-		fmt.Println("Error : Save to File")
-	}
 	c.SaveFile(file)
 }
 func SaveInterval(c *cache.Cache) {
