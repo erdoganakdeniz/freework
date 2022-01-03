@@ -16,9 +16,9 @@ import (
 )
 
 var c *cache.Cache
-var PORT = os.Getenv("PORT")
 
 func main() {
+	PORT := os.Getenv("PORT")
 	c = cache.New(35*time.Second, 35*time.Second)
 	utils.LoadfromFile(c)
 
