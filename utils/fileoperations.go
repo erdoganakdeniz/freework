@@ -2,31 +2,31 @@ package utils
 
 import (
 	"fmt"
-	"freework/cache"
+	"freework/store"
 	"os"
 	"time"
 )
 
 var file = "tmp/TIMESTAMP-data.gob"
 
-func SavetoFile(c *cache.Cache) {
+func SavetoFile(s *store.Store) {
 	_, err := os.Create(file)
 	if err != nil {
 	}
-	c.SaveFile(file)
+	s.SaveFile(file)
 
 }
-func SaveInterval(c *cache.Cache) {
-	for range time.Tick(10 * time.Minute) {
-		c.SaveFile(file)
+func SaveInterval(s *store.Store) {
+	for range time.Tick(20 * time.Minute) {
+		s.SaveFile(file)
 		fmt.Println("Automatic Save to File")
 	}
 
 }
-func LoadfromFile(c *cache.Cache) {
+func LoadfromFile(s *store.Store) {
 	_, err := os.Open(file)
 	if err == nil {
-		err := c.LoadFile(file)
+		err := s.LoadFile(file)
 		if err != nil {
 			fmt.Println("Error : Load From File")
 		}

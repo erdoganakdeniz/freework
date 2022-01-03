@@ -1,13 +1,13 @@
 package service
 
 import (
-	"freework/cache"
 	"freework/models"
+	"freework/store"
 	"net/http"
 )
 
-func Get(c *cache.Cache) *models.Response {
-	items := c.Items()
+func Get(s *store.Store) *models.Response {
+	items := s.Items()
 	res := models.Response{
 		Code:    http.StatusOK,
 		Method:  http.MethodGet,
@@ -15,8 +15,8 @@ func Get(c *cache.Cache) *models.Response {
 		Data:    items}
 	return &res
 }
-func GetByKey(c *cache.Cache, key string) *models.Response {
-	item, err := c.Get(key)
+func GetByKey(s *store.Store, key string) *models.Response {
+	item, err := s.Get(key)
 	if err == true {
 		res := models.Response{
 			Code:    http.StatusOK,
@@ -32,8 +32,8 @@ func GetByKey(c *cache.Cache, key string) *models.Response {
 		Data:    ""}
 	return &res
 }
-func Set(c *cache.Cache, data models.KeyValue) *models.Response {
-	err := c.Set(data.Key, data.Value, cache.DefaultExpiration)
+func Set(s *store.Store, data models.KeyValue) *models.Response {
+	err := s.Set(data.Key, data.Value, store.DefaultExpiration)
 	if err == nil {
 		res := models.Response{
 			Code:    http.StatusCreated,
@@ -50,8 +50,8 @@ func Set(c *cache.Cache, data models.KeyValue) *models.Response {
 	return &res
 
 }
-func Flush(c *cache.Cache) *models.Response {
-	c.Flush()
+func Flush(s *store.Store) *models.Response {
+	s.Flush()
 	res := models.Response{
 		Code:    http.StatusOK,
 		Method:  http.MethodGet,
@@ -60,8 +60,8 @@ func Flush(c *cache.Cache) *models.Response {
 
 	return &res
 }
-func Delete(c *cache.Cache, data string) *models.Response {
-	item := c.Delete(data)
+func Delete(s *store.Store, data string) *models.Response {
+	item := s.Delete(data)
 	res := models.Response{
 		Code:    http.StatusOK,
 		Method:  http.MethodDelete,

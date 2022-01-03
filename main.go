@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"freework/cache"
 	"freework/models"
 	"freework/service"
+	"freework/store"
 	"freework/utils"
 	"io/ioutil"
 	"log"
@@ -14,17 +14,17 @@ import (
 	"time"
 )
 
-var c *cache.Cache
+var s *store.Store
 var PORT = ":8080"
 
 func main() {
-	c = cache.New(35*time.Second, 35*time.Second)
-	utils.LoadfromFile(c)
-	utils.SavetoFile(c)
+	s = store.New(35*time.Second, 35*time.Second)
+	utils.LoadfromFile(s)
+	utils.SavetoFile(s)
 
 	go func() {
 		//Running it synchronously.
-		utils.SaveInterval(c)
+		utils.SaveInterval(s)
 	}()
 
 	mux := http.NewServeMux()
@@ -70,13 +70,13 @@ func Set(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error : ", http.StatusBadRequest)
 		return
 	}
-	era := service.Set(c, keyvalue)
+	era := service.Set(s, keyvalue)
 	res, _ := json.Marshal(era)
 	w.Write(res)
-	utils.SavetoFile(c)
+	utils.SavetoFile(s)
 }
 
-// GET all the stored cache
+// GET all the stored store
 func Get(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	log.Println("Serving:", r.URL.Path, " from", r.Host, r.Method)
@@ -85,10 +85,10 @@ func Get(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%s\n", "Method not allowed!")
 		return
 	}
-	era := service.Get(c)
+	era := service.Get(s)
 	res, _ := json.Marshal(era)
 	w.Write(res)
-	utils.SavetoFile(c)
+	utils.SavetoFile(s)
 
 }
 
@@ -101,8 +101,8 @@ func Flush(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%s\n", "Method not allowed!")
 		return
 	}
-	service.Flush(c)
-	utils.SavetoFile(c)
+	service.Flush(s)
+	utils.SavetoFile(s)
 
 }
 
@@ -116,10 +116,10 @@ func GetByKey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	key := strings.TrimPrefix(r.URL.Path, "/get/")
-	era := service.GetByKey(c, key)
+	era := service.GetByKey(s, key)
 	res, _ := json.Marshal(era)
 	w.Write(res)
-	utils.SavetoFile(c)
+	utils.SavetoFile(s)
 
 }
 
@@ -133,9 +133,9 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	key := strings.TrimPrefix(r.URL.Path, "/delete/")
-	era := service.Delete(c, key)
+	era := service.Delete(s, key)
 	res, _ := json.Marshal(era)
 	w.Write(res)
-	utils.SavetoFile(c)
+	utils.SavetoFile(s)
 
 }
