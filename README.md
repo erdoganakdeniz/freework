@@ -1,7 +1,7 @@
 
 # In memory key-value store REST API
 
-Tamamen standart kütüphaneler kullanılarak geliştirilmiş bir key-value store uygulamasıdır.Program ayağa kaldırıldığında TIMESTAMP-data.gob isimli dosya oluşturulur.
+Tamamen standart kütüphaneler kullanılarak geliştirilmiş bir key-value store uygulamasıdır.Uygulama ayağa kaldırıldığında TIMESTAMP-data.gob isimli dosya oluşturulur.
 
 Uygulama durup tekrar ayağa kalktığında, eğer
 kaydedilmiş dosya varsa, tekrar varolan verileri store'a yükler.
