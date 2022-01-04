@@ -119,11 +119,6 @@ Belirli aralıklarda (20 dakika) store'u dosyaya (TIMESTAMP-data.gob) kaydeder.
   GET /flush
 ```
 
-| Parametre | Tip     | Açıklama                       |
-| :-------- | :------- | :-------------------------------- |
-| `key`      | `string` | **Gerekli**. Silinecek öğenin anahtar değeri |
-
-
 #### Store Tamamen Boşaltıldıktan Sonra Dönen Değer
 
 ````
