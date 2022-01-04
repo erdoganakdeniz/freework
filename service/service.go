@@ -17,36 +17,37 @@ func Get(s *store.Store) *models.Response {
 }
 func GetByKey(s *store.Store, key string) *models.Response {
 	item, err := s.Get(key)
-	if err == true {
+	if err == false {
 		res := models.Response{
-			Code:    http.StatusOK,
+			Code:    http.StatusNotFound,
 			Method:  http.MethodGet,
-			Message: "Value Found",
-			Data:    item}
+			Message: "Value not Found",
+			Data:    ""}
 		return &res
 	}
 	res := models.Response{
-		Code:    http.StatusNotFound,
+		Code:    http.StatusOK,
 		Method:  http.MethodGet,
-		Message: "Value not Found",
-		Data:    ""}
+		Message: "Value Found",
+		Data:    item}
 	return &res
+
 }
 func Set(s *store.Store, data models.KeyValue) *models.Response {
 	err := s.Set(data.Key, data.Value, store.DefaultExpiration)
-	if err == nil {
+	if err != nil {
 		res := models.Response{
-			Code:    http.StatusCreated,
+			Code:    http.StatusBadRequest,
 			Method:  http.MethodPost,
-			Message: "Added into Store",
-			Data:    data}
+			Message: "Not Added into Store",
+			Data:    nil}
 		return &res
 	}
 	res := models.Response{
-		Code:    http.StatusBadRequest,
+		Code:    http.StatusCreated,
 		Method:  http.MethodPost,
-		Message: "Not Added into Store",
-		Data:    nil}
+		Message: "Added into Store",
+		Data:    data}
 	return &res
 
 }
